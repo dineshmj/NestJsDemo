@@ -3,7 +3,6 @@ import { CustomerController } from './customer.controller';
 import { ICustomerService } from 'src/services/ICustomerService';
 import { Customer } from 'src/models/Customer';
 import { HttpStatus } from '@nestjs/common';
-// import { ServiceStatus } from 'src/models/ServiceStatus';
 import { ServiceStatus } from '@models/ServiceStatus';
 
 describe('CustomerController', () => {

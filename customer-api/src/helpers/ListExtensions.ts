@@ -6,6 +6,7 @@ declare global {
     }
 }
 
+// Simulate extension method ".isNullOrEmpty ()" for a list.
 Array.prototype.isNullOrEmpty = function () {
     return !this || this.length === 0;
 }

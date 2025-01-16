@@ -1,9 +1,9 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { Customer } from '../models/Customer';
 import { BizResponse, ServiceStatus } from '../models/BizResponse';
 import { BizDataResponse } from 'src/models/BizDataResponse';
-import { ICustomerBizValidator } from './validators/ICustomerBizValidator';
 import { InstanceState } from 'src/models/InstanceState';
+import { Customer } from '../models/Customer';
+import { ICustomerBizValidator } from './validators/ICustomerBizValidator';
 import { ICustomerService } from './ICustomerService';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class CustomerService
       dateOfBirth: new Date(1990, 5, 15),
       email: 'john.doe@example.com',
       mobilePhoneNumber: '1234567890',
-      ssn: '123-45-6789', // Added SSN
+      ssn: '123-45-6789'
     },
     {
       id: 2,
@@ -26,7 +26,7 @@ export class CustomerService
       dateOfBirth: new Date(1985, 8, 25),
       email: 'jane.smith@example.com',
       mobilePhoneNumber: '0987654321',
-      ssn: '987-65-4321', // Added SSN
+      ssn: '987-65-4321'
     },
     {
       id: 3,
@@ -35,7 +35,7 @@ export class CustomerService
       dateOfBirth: new Date(1995, 2, 10),
       email: 'alice.johnson@example.com',
       mobilePhoneNumber: '5555555555',
-      ssn: '111-22-3333', // Added SSN
+      ssn: '111-22-3333'
     },
     {
       id: 4,
@@ -44,7 +44,7 @@ export class CustomerService
       dateOfBirth: new Date(2000, 10, 30),
       email: 'bob.brown@example.com',
       mobilePhoneNumber: '4444444444',
-      ssn: '222-33-4444', // Added SSN
+      ssn: '222-33-4444'
     },
   ];
 
@@ -53,6 +53,9 @@ export class CustomerService
   constructor(@Inject('ICustomerBizValidator') private readonly validator: ICustomerBizValidator) {
   }
 
+  //
+  // Add new customer.
+  //
   async addCustomer(newCustomer: Customer): Promise<BizDataResponse<Customer>> {
     // Business validation
     const validationFailures = await this.validator.validate (newCustomer, InstanceState.New);
@@ -68,6 +71,9 @@ export class CustomerService
     return new BizDataResponse(ServiceStatus.Created, newCustomer);
   }
 
+  //
+  // Modify existing customer.
+  //
   async modifyCustomer(customer: Customer): Promise<BizResponse> {
     // Business validation
     const validationFailures = await this.validator.validate(customer, InstanceState.Existing);
@@ -87,6 +93,9 @@ export class CustomerService
     return new BizResponse(ServiceStatus.Modified);
   }
 
+  //
+  // Get the specific customer whose ID is provided.
+  //
   async getCustomerById(id: number): Promise<BizDataResponse<Customer>> {
     const customer = this.customers.find(c => c.id === +id);
 
@@ -100,6 +109,9 @@ export class CustomerService
     return new BizDataResponse(ServiceStatus.SpecificItemFound, customer);
   }
 
+  //
+  // Get a list of matching customers to the search criteria specified.
+  //
   async searchCustomers(query: Partial<Customer>): Promise<BizDataResponse<Customer[]>> {
     const matchingCustomers = this.customers.filter((customer) => {
       return Object.keys(query).every((key) =>
@@ -114,6 +126,9 @@ export class CustomerService
     return new BizDataResponse(ServiceStatus.MatchingItemsFound, matchingCustomers);
   }
 
+  //
+  // Delete an existing customer whose ID is provided.
+  //
   async deleteCustomer(id: number): Promise<BizResponse> {
     const index = this.customers.findIndex(c => c.id === +id);
     
